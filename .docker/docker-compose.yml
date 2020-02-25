@@ -10,9 +10,10 @@ services:
     links:
       - php
     ports:
-      - 8090:80
+      - ${HOST_PORT}:80
     networks:
       - default
+      - backend
 
   php:
     container_name: auth_php
@@ -36,3 +37,7 @@ services:
       - ${SSH_HOST_PATH}:/root/.ssh/:ro
     working_dir: ${APP_CONTAINER_PATH}
     command: composer install
+
+networks:
+  backend:
+    external: true
