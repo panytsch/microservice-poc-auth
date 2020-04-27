@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Authorise;
 
 class  TokenGenerator
@@ -12,10 +13,8 @@ class  TokenGenerator
      */
     public function generateRedisToken(BaseUserInterface $user): string
     {
-        return md5(
-            sprintf(static::REDIS_STORAGE_PATTERN,
-                $user->getNet(), $user->getSkin(), $user->getName(), $user->getPass()
-            )
+        return sprintf(static::REDIS_STORAGE_PATTERN,
+            $user->getNet(), $user->getSkin(), $user->getName(), $user->getPass()
         );
     }
 
