@@ -25,3 +25,28 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    app.redis.provider:
+        class: Redis
+        factory: ['Symfony\Component\Cache\Adapter\RedisAdapter', 'createConnection']
+        arguments:
+            - '%env(REDIS_CONNECTION_URL)%'
+
+    App\Services\Authorise\Auth:
+        arguments:
+            - '@App\Storage\Adapter\ServicesAdapter'
+            - '@App\Storage\Adapter\RedisAdapter'
+            - '@App\Storage\Adapter\DbAdapter'
+
+
+    App\Services\Redis\Handler:
+        arguments:
+            - '@app.redis.provider'
+
+    App\Services\Redis\RedisHandlerInterface: '@App\Services\Redis\Handler'
+
+    App\Storage\Adapter\RedisAdapter:
+        arguments:
+            - '@App\Services\Redis\Handler'
+
+    App\Storage\StorageAdapterInterface: '@App\Storage\Adapter\RedisAdapter'

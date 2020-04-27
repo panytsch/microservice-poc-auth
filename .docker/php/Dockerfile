@@ -9,4 +9,13 @@ RUN apt-get update && \
     docker-php-ext-install pdo pdo_mysql && \
     docker-php-ext-enable xdebug zip
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN curl -L -o /tmp/redis.tar.gz https://github.com/phpredis/phpredis/archive/5.2.1.tar.gz \
+    && tar xfz /tmp/redis.tar.gz \
+    && rm -r /tmp/redis.tar.gz \
+    && mkdir -p /usr/src/php/ext/redis \
+    && mv phpredis-5.2.1/* /usr/src/php/ext/redis \
+    && docker-php-ext-install redis
+
 CMD ["php-fpm"]

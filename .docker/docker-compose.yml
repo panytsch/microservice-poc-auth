@@ -27,16 +27,8 @@ services:
     expose:
       - 9000
     networks:
+      - backend
       - default
-
-  composer:
-    container_name: auth_composer
-    image: composer:latest
-    volumes:
-      - ${APP_HOST_PATH}:${APP_CONTAINER_PATH}
-      - ${SSH_HOST_PATH}:/root/.ssh/:ro
-    working_dir: ${APP_CONTAINER_PATH}
-    command: composer install
 
 networks:
   backend:
